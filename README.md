@@ -1,10 +1,14 @@
 ![SOLOCV Banner](./assets/logo.jpg)
 
-# 🎯 SOLOCV
+# 🚀 SOLOCV
 
 觉得有用就给个 Star ⭐ 吧！
 
+
+> 本项目致力于打造一个部署 CV 模型的简单工具，包含多种硬件推理后端。
+
 > 独立、轻量、即拿即用的 CV 模型推理文件集 —— 每个模型一个文件，拿来就能跑。
+
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/)
@@ -34,8 +38,9 @@
 | 需要安装整个框架 | 只下载你需要的那个文件 |
 | 需要学习复杂的 API | 打开文件看一眼就懂 |
 | 改一个地方可能影响全局 | 模型之间完全隔离 |
-| 添加新模型需要理解整个架构 | 复制一个文件，改几行代码即可 |
 | 新手劝退 | 零门槛 |
+|||
+
 
 **SOLOCV 的目标：让你 10 秒内从下载到跑通第一个模型。**
 
@@ -46,14 +51,23 @@
 
 ---
 
-## 🚀 怎么用？
+## 🔧 怎么用？
 
 ### 方式一：直接运行命令行
 
 ```bash
-# 下载 yolo.py 和模型权重后，直接跑
-python yolo.py --model yolov8n.onnx --image test.jpg
+# 下载 yolo.py 和模型权重后，如果在项目下执行，只需要执行命令即可，否则修改一下权重路径和文件路径
+python yolo.py
 ```
+
+## 📚 查看更多模型推理文档
+
+🏷️ [查看分类任务模型推理文档](infer/cls/README.md)
+🎯 [查看目标检测模型推理文档](infer/det/README.md)
+🧩 [查看分割任务模型推理文档](infer/seg/README.md)
+🧍 [查看人体姿态模型推理文档](infer/pose/README.md)
+🔤 [查看ocr识别模型推理文档](infer/ocr/README.md)
+
 
 ## 📄 许可证
 采用 Apache License 2.0，商业友好，可自由使用和修改。
