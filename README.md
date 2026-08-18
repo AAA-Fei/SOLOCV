@@ -62,10 +62,10 @@ python yolo.py
 
 ## 📚 查看更多模型推理文档
 
-🏷️ [查看分类任务模型推理文档](infer/cls/README.md)
-🎯 [查看目标检测模型推理文档](infer/det/README.md)
-🧩 [查看分割任务模型推理文档](infer/seg/README.md)
-🧍 [查看人体姿态模型推理文档](infer/pose/README.md)
+🏷️ [查看分类任务模型推理文档](infer/cls/README.md)  
+🎯 [查看目标检测模型推理文档](infer/det/README.md)  
+🧩 [查看分割任务模型推理文档](infer/seg/README.md)  
+🧍 [查看人体姿态模型推理文档](infer/pose/README.md)  
 🔤 [查看ocr识别模型推理文档](infer/ocr/README.md)
 
 
