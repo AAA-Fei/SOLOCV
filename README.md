@@ -53,17 +53,15 @@
 python yolo.py --model yolov8n.onnx --image test.jpg
 
 
-📄 许可证
+## 📄 许可证
 采用 Apache License 2.0，商业友好，可自由使用和修改。
 
 
-🙏 致谢
+## 🙏 致谢
 ONNX Runtime
-
 所有开源模型和数据集
-
 每一位贡献者 ❤️
 
-📬 参与贡献
+## 📬 参与贡献
 提 Issue 报告问题或建议
 提 PR 添加新的模型文件
