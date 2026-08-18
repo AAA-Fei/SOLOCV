@@ -51,7 +51,7 @@
 ```bash
 # 下载 yolo.py 和模型权重后，直接跑
 python yolo.py --model yolov8n.onnx --image test.jpg
-
+```
 
 ## 📄 许可证
 采用 Apache License 2.0，商业友好，可自由使用和修改。
