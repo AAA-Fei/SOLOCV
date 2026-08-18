@@ -25,6 +25,7 @@
 | :--- |:---------------------------------------------| :---: | :---: | :--- |
 | [yolo-pose-onnxruntime.py](./yolo-pose-onnxruntime.py) | `models/pose/yolo-pose-onnxruntime.onnx`     | 640×640 | CPU/GPU | 标准导出，后处理灵活可控（需手动实现 NMS） |
 | [yolo-pose-onnxruntime-nms.py](./yolo-pose-onnxruntime-nms.py) | `models/pose/yolo-pose-onnxruntime-nms.onnx` | 640×640 | CPU/GPU | 部署更轻量，已内置 NMS，无需再做非极大值抑制 |
+| [rtmpose-pose-onnxruntime.py](./rtmpose-pose-onnxruntime.py) | `models/pose/rtmpose-pose-onnxruntime.onnx` | 256×192 | CPU/GPU | RTMPose，HALPE26 拓扑（26 关键点），不返回检测框，需外部提供人体 bbox |
 
 ---
 
