@@ -23,8 +23,8 @@
 
 | 文件 | 模型文件 | 输入尺寸 | 支持设备 | 说明 |
 | :--- | :--- | :---: | :---: | :--- |
-| [yolo-onnxruntime.py](./yolo-onnxruntime.py) | `models/det/yolo.onnx` | 640×640 | CPU/GPU | 标准导出，后处理灵活可控 |
-| [yolo-onnxruntime-nms.py](./yolo-onnxruntime-nms.py) | `models/det/yolo_nms.onnx` | 640×640 | CPU/GPU | 部署更轻量，无需再做 NMS |
+| [yolo-det-onnxruntime.py](./yolo-det-onnxruntime.py) | `models/det/yolo.onnx` | 640×640 | CPU/GPU | 标准导出，后处理灵活可控 |
+| [yolo-det-det-onnxruntime-nms.py](./yolo-det-onnxruntime-nms.py) | `models/det/yolo_nms.onnx` | 640×640 | CPU/GPU | 部署更轻量，无需再做 NMS |
 
 
 ---
