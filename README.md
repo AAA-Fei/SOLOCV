@@ -1,4 +1,4 @@
-![SOLOCV Banner](./logo.jpg)
+![SOLOCV Banner](./assets/logo.jpg)
 
 # 🎯 SOLOCV
 
