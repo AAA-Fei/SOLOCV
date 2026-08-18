@@ -21,10 +21,10 @@
 
 ## ONNXRuntime
 
-| 文件 | 模型文件 | 输入尺寸 | 支持设备 | 说明 |
-| :--- | :--- | :---: | :---: | :--- |
-| [yolo-pose-onnxruntime.py](./yolo-pose-onnxruntime.py) | `models/pose/yolo-pose.onnx` | 640×640 | CPU/GPU | 标准导出，后处理灵活可控（需手动实现 NMS） |
-| [yolo-pose-onnxruntime-nms.py](./yolo-pose-onnxruntime-nms.py) | `models/pose/yolo-pose-nms.onnx` | 640×640 | CPU/GPU | 部署更轻量，已内置 NMS，无需再做非极大值抑制 |
+| 文件 | 模型文件                                         | 输入尺寸 | 支持设备 | 说明 |
+| :--- |:---------------------------------------------| :---: | :---: | :--- |
+| [yolo-pose-onnxruntime.py](./yolo-pose-onnxruntime.py) | `models/pose/yolo-pose-onnxruntime.onnx`     | 640×640 | CPU/GPU | 标准导出，后处理灵活可控（需手动实现 NMS） |
+| [yolo-pose-onnxruntime-nms.py](./yolo-pose-onnxruntime-nms.py) | `models/pose/yolo-pose-onnxruntime-nms.onnx` | 640×640 | CPU/GPU | 部署更轻量，已内置 NMS，无需再做非极大值抑制 |
 
 ---
 

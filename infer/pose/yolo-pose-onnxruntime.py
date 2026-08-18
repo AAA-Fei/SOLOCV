@@ -174,7 +174,7 @@ if __name__ == "__main__":
 
     script_dir = Path(__file__).resolve().parent
     target_file = script_dir.parent.parent
-    model = target_file / Path("models/pose/yolo-pose.onnx")
+    model = target_file / Path("models/pose/yolo-pose-onnxruntime.onnx")
     img = target_file / Path("assets/bus.jpg")
     conf_thres = 0.5
     iou_thres = 0.5
@@ -184,8 +184,11 @@ if __name__ == "__main__":
     detection = YOLO_POSE(model, conf_thres, iou_thres, kpt_conf_thres, draw_boxes=True)
     output_image, detections = detection.run(cv2.imread(str(img)))
     print(f"检测到 {len(detections)} 个人：")
-    for det in detections:
-        print(f"  {det}")
+    for i, det in enumerate(detections):
+        x1, y1, x2, y2, score, keypoints = det
+        print(f"  person {i}: bbox=({x1}, {y1}, {x2}, {y2}) score={score:.2f}")
+        for kpt_name, (kx, ky, kconf) in zip(detection.KEYPOINT_NAMES, keypoints):
+            print(f"    {kpt_name}: ({kx}, {ky}, {kconf:.2f})")
 
     cv2.imshow("Output", output_image)
     cv2.waitKey(0)
