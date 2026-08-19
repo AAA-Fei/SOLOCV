@@ -23,7 +23,7 @@
 
 | 文件 | 模型文件 | 输入尺寸 | 支持设备 | 模型出处 | 说明 |
 | :--- | :--- | :---: | :---: | :--- | :--- |
-| - | - | - | CPU/GPU | - | 待添加 |
+| [plate-ocr-onnxruntime.py](./plate-ocr-onnxruntime.py) | `models/ocr/plate-det-onnxruntime.onnx`、`models/ocr/plate-rec-onnxruntime.onnx` | 检测 640×640、识别 48×168 | CPU/GPU | [Chinese_license_plate](https://github.com/we0091234/Chinese_license_plate_detection_recognition) | 车牌检测 + 文字识别（含车牌颜色），支持单层/双层车牌 |
 
 ---
 
