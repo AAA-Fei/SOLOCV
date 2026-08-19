@@ -175,7 +175,7 @@ if __name__ == "__main__":
     script_dir = Path(__file__).resolve().parent
     target_file = script_dir.parent.parent
     model = target_file / Path("models/pose/yolo-pose-onnxruntime.onnx")
-    img = target_file / Path("assets/bus.jpg")
+    img = target_file / Path("assets/human.jpg")
     conf_thres = 0.5
     iou_thres = 0.5
     kpt_conf_thres = 0.5

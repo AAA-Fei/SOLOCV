@@ -21,11 +21,13 @@
 
 ## ONNXRuntime
 
-| 文件 | 模型文件                                         | 输入尺寸 | 支持设备 | 说明 |
-| :--- |:---------------------------------------------| :---: | :---: | :--- |
-| [yolo-pose-onnxruntime.py](./yolo-pose-onnxruntime.py) | `models/pose/yolo-pose-onnxruntime.onnx`     | 640×640 | CPU/GPU | 标准导出，后处理灵活可控（需手动实现 NMS） |
-| [yolo-pose-onnxruntime-nms.py](./yolo-pose-onnxruntime-nms.py) | `models/pose/yolo-pose-onnxruntime-nms.onnx` | 640×640 | CPU/GPU | 部署更轻量，已内置 NMS，无需再做非极大值抑制 |
-| [rtmpose-pose-onnxruntime.py](./rtmpose-pose-onnxruntime.py) | `models/pose/rtmpose-pose-onnxruntime.onnx` | 256×192 | CPU/GPU | RTMPose，HALPE26 拓扑（26 关键点），不返回检测框，需外部提供人体 bbox |
+| 文件 | 模型文件                                         | 输入尺寸 | 支持设备 | 模型出处 | 说明 |
+| :--- |:---------------------------------------------| :---: | :---: | :--- | :--- |
+| [yolo-pose-onnxruntime.py](./yolo-pose-onnxruntime.py) | `models/pose/yolo-pose-onnxruntime.onnx`     | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 标准导出，后处理灵活可控（需手动实现 NMS） |
+| [yolo-pose-onnxruntime-nms.py](./yolo-pose-onnxruntime-nms.py) | `models/pose/yolo-pose-onnxruntime-nms.onnx` | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 部署更轻量，已内置 NMS，无需再做非极大值抑制 |
+| [rtmpose-pose-onnxruntime.py](./rtmpose-pose-onnxruntime.py) | `models/pose/rtmpose-pose-onnxruntime.onnx` | 256×192 | CPU/GPU | [RTMPose](https://github.com/open-mmlab/mmpose/tree/dev-1.x/projects/rtmpose) | RTMPose，HALPE26 拓扑（26 关键点），不返回检测框，需外部提供人体 bbox |
+| [hrnet-pose-onnxruntime.py](./hrnet-pose-onnxruntime.py) | `models/pose/hrnet-pose-onnxruntime.onnx` | 256×192 | CPU/GPU | [HRNet](https://github.com/leoxiaobin/deep-high-resolution-net.pytorch) | HRNet（top-down），COCO 17 关键点，不返回检测框，需外部提供人体 bbox 或默认整图单人 |
+| [vitpose-pose-onnxruntime.py](./vitpose-pose-onnxruntime.py) | `models/pose/vitpose-pose-onnxruntime.onnx` | 256×192 | CPU/GPU | [ViTPose](https://github.com/ViTAE-Transformer/ViTPose) | ViTPose（top-down），COCO 17 关键点，UDP 仿射对齐 + DARK 解码，默认整图单人推理 |
 
 ---
 

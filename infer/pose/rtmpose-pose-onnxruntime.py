@@ -243,7 +243,7 @@ if __name__ == "__main__":
     script_dir = Path(__file__).resolve().parent
     target_file = script_dir.parent.parent
     model = target_file / Path("models/pose/rtmpose-pose-onnxruntime.onnx")
-    img_path = target_file / Path("assets/nixiaozi.jpg")
+    img_path = target_file / Path("assets/human.jpg")
     kpt_conf_thres = 0.5
 
     # RTMPose 不返回检测框，需提供人体 bbox（xyxy），默认整张图片作为单人区域

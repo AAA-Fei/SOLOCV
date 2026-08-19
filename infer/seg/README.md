@@ -21,10 +21,10 @@
 
 ## ONNXRuntime
 
-| 文件 | 模型文件 | 输入尺寸 | 支持设备 | 说明 |
-| :--- | :--- | :---: | :---: | :--- |
-| [yolo-seg-onnxruntime.py](./yolo-seg-onnxruntime.py) | `models/seg/yolo-seg.onnx` | 640×640 | CPU/GPU | 标准导出，后处理灵活可控 |
-| [yolo-seg-onnxruntime-nms.py](./yolo-seg-onnxruntime-nms.py) | `models/seg/yolo-seg-nms.onnx` | 640×640 | CPU/GPU | 部署更轻量，无需再做 NMS |
+| 文件 | 模型文件 | 输入尺寸 | 支持设备 | 模型出处 | 说明 |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| [yolo-seg-onnxruntime.py](./yolo-seg-onnxruntime.py) | `models/seg/yolo-seg.onnx` | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 标准导出，后处理灵活可控 |
+| [yolo-seg-onnxruntime-nms.py](./yolo-seg-onnxruntime-nms.py) | `models/seg/yolo-seg-nms.onnx` | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 部署更轻量，无需再做 NMS |
 
 ---
 
