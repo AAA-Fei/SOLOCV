@@ -74,14 +74,15 @@ pip install modelscope
 modelscope download --model whiteCV/models
 ```
 
+> 下载完成后，将权重文件放到项目 `models/` 目录下（如 `models/det/yolo.onnx`），再参考各 `infer/*/README.md` 中的模型文件路径运行对应推理脚本。
+
+
 ### 二：直接运行命令行
 
 ```bash
 # 下载 yolo.py 和模型权重后，如果在项目下执行，只需要执行命令即可，否则修改一下权重路径和文件路径
 python yolo.py
 ```
-
-> 下载完成后，将权重文件放到项目 `models/` 目录下（如 `models/det/yolo.onnx`），再参考各 `infer/*/README.md` 中的模型文件路径运行对应推理脚本。
 
 ## 📚 查看更多模型推理文档
 
