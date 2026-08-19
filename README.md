@@ -53,12 +53,35 @@
 
 ## 🔧 怎么用？
 
-### 方式一：直接运行命令行
+### 一：下载模型权重（ModelScope）
+
+模型权重已托管在 ModelScope，可按需任选一种方式下载：
+
+**① 网页直接下载**
+
+访问 [modelscope.cn/models/whiteCV/models/files](https://modelscope.cn/models/whiteCV/models/files)，按 `models/<任务>/<模型名>.onnx` 目录结构下载对应权重，放入项目的 `models/` 目录。
+
+**② Git 下载**
+
+```bash
+git clone https://www.modelscope.cn/whiteCV/models.git
+```
+
+**③ pip install modelscope 命令行下载**
+
+```bash
+pip install modelscope
+modelscope download --model whiteCV/models
+```
+
+### 二：直接运行命令行
 
 ```bash
 # 下载 yolo.py 和模型权重后，如果在项目下执行，只需要执行命令即可，否则修改一下权重路径和文件路径
 python yolo.py
 ```
+
+> 下载完成后，将权重文件放到项目 `models/` 目录下（如 `models/det/yolo.onnx`），再参考各 `infer/*/README.md` 中的模型文件路径运行对应推理脚本。
 
 ## 📚 查看更多模型推理文档
 

@@ -1,0 +1,2 @@
+# 忽略根目录下的 weights 文件夹
+/models/
