@@ -91,6 +91,8 @@ python yolo.py
 - 🧩 [查看分割任务模型推理文档](./infer/seg/README.md)
 - 🧍 [查看人体姿态模型推理文档](./infer/pose/README.md)
 - 🔤 [查看OCR识别模型推理文档](./infer/ocr/README.md)
+- 🛣️ [查看深度估计模型推理文档](./infer/depth/README.md)
+
 
 ## 📄 许可证
 采用 Apache License 2.0，商业友好，可自由使用和修改。
