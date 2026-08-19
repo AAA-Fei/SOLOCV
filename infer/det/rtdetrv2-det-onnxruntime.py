@@ -3,9 +3,10 @@ import numpy as np
 import onnxruntime as ort
 from typing import List, Tuple
 
-class YOLO:
-    def __init__(self, onnx_model: str, confidence_thres: float, iou_thres: float,
-                 draw_boxes: bool = False):  # 新增绘制开关
+
+class RTDETRv2:
+    def __init__(self, onnx_model: str, score_thr: float = 0.5,
+                 draw_boxes: bool = False):
         available = ort.get_available_providers()
         providers = [p for p in ("CUDAExecutionProvider", "CPUExecutionProvider") if p in available]
         self.session = ort.InferenceSession(onnx_model, providers=providers or available)
@@ -13,12 +14,11 @@ class YOLO:
         input_shape = self.model_inputs[0].shape
         self.input_height = input_shape[2]
         self.input_width = input_shape[3]
+        self.model_input_size = (self.input_height, self.input_width)  # (h, w)
 
-        self.confidence_thres = confidence_thres
-        self.iou_thres = iou_thres
+        self.score_thr = score_thr
         self.draw_boxes = draw_boxes  # 控制是否绘制
 
-        # 类别字典保持不变
         self.classes = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
                         6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant',
                         11: 'stop sign', 12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat',
@@ -35,27 +35,15 @@ class YOLO:
                         68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator',
                         73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear',
                         78: 'hair drier', 79: 'toothbrush'}
-        # 固定颜色，避免随机变化（也可保留随机，这里改为固定明亮颜色）
+        # 固定颜色，避免随机变化
         np.random.seed(21)
         self.color_palette = np.random.uniform(100, 255, size=(len(self.classes), 3)).astype(int)
 
-    def letterbox(self, img: np.ndarray, new_shape: Tuple[int, int] = (640, 640)) -> Tuple[np.ndarray, Tuple[int, int]]:
-        shape = img.shape[:2]
-        r = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
-        new_unpad = round(shape[1] * r), round(shape[0] * r)
-        dw, dh = (new_shape[1] - new_unpad[0]) / 2, (new_shape[0] - new_unpad[1]) / 2
-        if shape[::-1] != new_unpad:
-            img = cv2.resize(img, new_unpad, interpolation=cv2.INTER_LINEAR)
-        top, bottom = round(dh - 0.1), round(dh + 0.1)
-        left, right = round(dw - 0.1), round(dw + 0.1)
-        img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(114, 114, 114))
-        return img, (top, left)
-
     def draw_detections(self, img: np.ndarray, box: List[float], score: float, class_id: int) -> None:
         x1, y1, w, h = box
-        color = self.color_palette[class_id].tolist()
+        color = self.color_palette[class_id % len(self.classes)].tolist()
         cv2.rectangle(img, (int(x1), int(y1)), (int(x1 + w), int(y1 + h)), color, 2)
-        label = f"{self.classes[class_id]}: {score:.2f}"
+        label = f"{self.classes.get(class_id, class_id)}: {score:.2f}"
         (label_width, label_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
         # 修正文字背景框的位置，使其恰好包裹文字
         label_x = x1
@@ -64,71 +52,68 @@ class YOLO:
                       (label_x + label_width, label_y + baseline), color, cv2.FILLED)
         cv2.putText(img, label, (label_x, label_y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
 
-    def preprocess(self, img: np.ndarray) -> Tuple[np.ndarray, Tuple[int, int]]:
-        self.img_height, self.img_width = img.shape[:2]
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img, pad = self.letterbox(img, (self.input_width, self.input_height))
-        image_data = np.array(img) / 255.0
-        image_data = np.transpose(image_data, (2, 0, 1))
-        image_data = image_data[None].astype(np.float32)
-        return image_data, pad
+    # ---------- 推理 ----------
 
-    def postprocess(self, input_image: np.ndarray, output: List[np.ndarray],
-                    pad: Tuple[int, int]) -> Tuple[np.ndarray, List[Tuple[float, float, float, float, int, float]]]:
+    def preprocess(self, img: np.ndarray) -> np.ndarray:
         """
+        官方预处理（rtdetrv2_onnxruntime.py）：
+        Resize((640, 640)) + ToTensor(/255)，直接用 cv2 实现。
+        BGR->RGB -> resize 到模型输入尺寸 -> HWC->CHW -> float32 /255
+        返回 [1, 3, H, W] 输入张量。
+        """
+        self.img_height, self.img_width = img.shape[:2]
+        input_image = cv2.resize(img, (self.input_width, self.input_height))
+        input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
+        input_image = input_image.transpose(2, 0, 1)
+        input_image = np.expand_dims(input_image, axis=0)
+        input_image = input_image.astype(np.float32) / 255.0
+        return input_image
+
+    def postprocess(self, input_image: np.ndarray,
+                    outputs: List[np.ndarray]) -> Tuple[np.ndarray, List[Tuple]]:
+        """
+        官方后处理（rtdetrv2_onnxruntime.py）：
+        模型已内置解码（topk 300），输出 labels/boxes/scores，
+        boxes 为 xyxy 且已缩放回原图坐标，无需额外解码与 NMS。
+
         返回 (绘制后的图像, 检测结果列表)
         检测结果列表元素: (x1, y1, x2, y2, class_id, score)
         坐标均为原图上的整数坐标（左上角、右下角）
         """
-        outputs = np.transpose(np.squeeze(output[0]))
-        rows = outputs.shape[0]
-        boxes = []
-        scores = []
-        class_ids = []
-        gain = min(self.input_height / self.img_height, self.input_width / self.img_width)
+        labels = np.squeeze(outputs[0])
+        boxes = np.squeeze(outputs[1])
+        scores = np.squeeze(outputs[2])
+        if labels.ndim == 0:
+            labels, boxes, scores = labels[None], boxes[None, None], scores[None]
 
-        # 先去除 padding
-        outputs[:, 0] -= pad[1]  # x
-        outputs[:, 1] -= pad[0]  # y
-
-        for i in range(rows):
-            classes_scores = outputs[i][4:]
-            max_score = np.amax(classes_scores)
-            if max_score >= self.confidence_thres:
-                class_id = np.argmax(classes_scores)
-                x, y, w, h = outputs[i][0], outputs[i][1], outputs[i][2], outputs[i][3]
-                left = int((x - w / 2) / gain)
-                top = int((y - h / 2) / gain)
-                width = int(w / gain)
-                height = int(h / gain)
-                class_ids.append(class_id)
-                scores.append(max_score)
-                boxes.append([left, top, width, height])
-
-        # NMS
-        indices = cv2.dnn.NMSBoxes(boxes, scores, self.confidence_thres, self.iou_thres)
         detections = []
-        if len(indices) > 0:
-            for i in np.array(indices).flatten():
-                idx = int(i)
-                box = boxes[idx]
-                score = scores[idx]
-                class_id = class_ids[idx]
-                x1, y1, w, h = box
-                x2, y2 = x1 + w, y1 + h
-                detections.append((x1, y1, x2, y2, class_id, score))
-                if self.draw_boxes:
-                    self.draw_detections(input_image, box, score, class_id)
+        for label, box, score in zip(labels, boxes, scores):
+            if score < self.score_thr:
+                continue
+            class_id = int(label)
+            x1, y1, x2, y2 = box
+            detections.append((int(x1), int(y1), int(x2), int(y2),
+                               class_id, float(score)))
+
+        if self.draw_boxes:
+            for x1, y1, x2, y2, class_id, score in detections:
+                box_xywh = [x1, y1, x2 - x1, y2 - y1]
+                self.draw_detections(input_image, box_xywh, score, class_id)
+
         return input_image, detections
 
-    def run(self, img: np.ndarray) -> Tuple[np.ndarray, List[Tuple[float, float, float, float, int, float]]]:
+    def run(self, img: np.ndarray) -> Tuple[np.ndarray, List[Tuple]]:
         """
         执行推理，返回 (绘制后的图像, 检测结果)
         """
         img_copy = img.copy()
-        img_data, pad = self.preprocess(img)
-        outputs = self.session.run(None, {self.model_inputs[0].name: img_data})
-        return self.postprocess(img_copy, outputs, pad)
+        input_image = self.preprocess(img)
+        # 官方传入原始图像尺寸 [w, h]，模型据此将归一化 bbox 缩放到原图坐标
+        orig_target_sizes = np.array(
+            [[self.img_width, self.img_height]], dtype=np.int64)
+        outputs = self.session.run(
+            None, {'images': input_image, 'orig_target_sizes': orig_target_sizes})
+        return self.postprocess(img_copy, outputs)
 
 
 if __name__ == "__main__":
@@ -136,13 +121,11 @@ if __name__ == "__main__":
 
     script_dir = Path(__file__).resolve().parent
     target_file = script_dir.parent.parent
-    model = target_file / Path("models/det/yolo-det-onnxruntime.onnx")
+    model = target_file / Path("models/det/rtdetrv2-det-onnxruntime.onnx")
     img = target_file / Path("assets/bus.jpg")
-    conf_thres = 0.5
-    iou_thres = 0.5
+    score_thr = 0.5
 
-    # 实例化时设置 draw_boxes=True 可绘制
-    detection = YOLO(model, conf_thres, iou_thres, draw_boxes=True)
+    detection = RTDETRv2(model, score_thr, draw_boxes=True)
     output_image, detections = detection.run(cv2.imread(str(img)))
     print(f"检测到 {len(detections)} 个目标：")
     for det in detections:

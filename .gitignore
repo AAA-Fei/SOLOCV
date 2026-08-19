@@ -3,6 +3,7 @@
 
 # 忽略根目录下的 __pycache__ 文件夹
 /infer/cls/__pycache__/
+/infer/depth/__pycache__/
 /infer/det/__pycache__/
 /infer/ocr/__pycache__/
 /infer/pose/__pycache__/

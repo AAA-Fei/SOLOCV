@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
     script_dir = Path(__file__).resolve().parent
     target_file = script_dir.parent.parent
-    model = target_file / Path("models/det/yolo_nms.onnx")
+    model = target_file / Path("models/det/yolo_nms-det-onnxruntime.onnx")
     img = target_file / Path("assets/bus.jpg")
     conf_thres = 0.5
     iou_thres = 0.5

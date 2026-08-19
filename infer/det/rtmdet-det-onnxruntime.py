@@ -6,7 +6,6 @@ from typing import List, Tuple
 
 class RTMDET:
     def __init__(self, onnx_model: str, score_thr: float = 0.3, nms_thr: float = 0.45,
-                 det_mode: str = 'multiclass',
                  mean: Tuple[float, float, float] = (103.5300, 116.2800, 123.6750),
                  std: Tuple[float, float, float] = (57.3750, 57.1200, 58.3950),
                  draw_boxes: bool = False):
@@ -21,8 +20,6 @@ class RTMDET:
 
         self.score_thr = score_thr
         self.nms_thr = nms_thr
-        # 'multiclass': 返回所有类别；'human': 只保留 person (class_id=0)
-        self.det_mode = det_mode
         self.mean = np.array(mean, dtype=np.float32)
         self.std = np.array(std, dtype=np.float32)
         self.draw_boxes = draw_boxes  # 控制是否绘制
@@ -204,8 +201,6 @@ class RTMDET:
             if dets is not None:
                 for x1, y1, x2, y2, score, cls_ind in dets:
                     class_id = int(cls_ind)
-                    if self.det_mode == 'human' and class_id != 0:
-                        continue
                     detections.append((int(x1), int(y1), int(x2), int(y2),
                                        class_id, float(score)))
 
@@ -220,8 +215,6 @@ class RTMDET:
             isscore = final_scores > self.score_thr
             for i in np.where(isscore)[0]:
                 class_id = int(labels[i]) if labels is not None else 0
-                if self.det_mode == 'human' and class_id != 0:
-                    continue
                 x1, y1, x2, y2 = final_boxes[i]
                 detections.append((int(x1), int(y1), int(x2), int(y2),
                                    class_id, float(final_scores[i])))
@@ -253,13 +246,12 @@ if __name__ == "__main__":
 
     script_dir = Path(__file__).resolve().parent
     target_file = script_dir.parent.parent
-    model = target_file / Path("models/det/rtmdet.onnx")
+    model = target_file / Path("models/det/rtmdet-det-onnxruntime.onnx")
     img = target_file / Path("assets/bus.jpg")
     score_thr = 0.5
     nms_thr = 0.5
 
-    # det_mode='multiclass' 返回所有类别；det_mode='human' 只保留 person
-    detection = RTMDET(model, score_thr, nms_thr, det_mode='multiclass', draw_boxes=True)
+    detection = RTMDET(model, score_thr, nms_thr, draw_boxes=True)
     output_image, detections = detection.run(cv2.imread(str(img)))
     print(f"检测到 {len(detections)} 个目标：")
     for det in detections:

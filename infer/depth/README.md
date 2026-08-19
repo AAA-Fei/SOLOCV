@@ -1,8 +1,8 @@
-# 实例分割推理 (Segmentation Inference)
+# 深度估计推理 (Depth Estimation Inference)
 
 👉 [回主页文档](../../README.md)
 
-本目录存放实例分割的推理代码，支持多种后端推理框架。返回原图坐标 `(x1, y1, x2, y2, class_id, score, mask)`，其中 `mask` 为布尔数组，shape = `(img_h, img_w)`。
+本目录存放单目深度估计 (Monocular Depth Estimation) 的推理代码，支持多种后端推理框架。返回深度图 `(depth_map)`，shape = `(img_h, img_w)`，值越大表示距离越近。
 
 ## 推理后端总览
 
@@ -21,10 +21,9 @@
 
 ## ONNXRuntime
 
-| 文件 | 模型文件                                       | 输入尺寸 | 支持设备 | 模型出处 | 说明 |
-| :--- |:-------------------------------------------| :---: | :---: | :--- | :--- |
-| [yolo-seg-onnxruntime.py](./yolo-seg-onnxruntime.py) | `models/seg/yolo-seg-onnxruntime.onnx`     | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 标准导出，后处理灵活可控 |
-| [yolo-seg-onnxruntime-nms.py](./yolo-seg-onnxruntime-nms.py) | `models/seg/yolo-nms-seg-onnxruntime.onnx` | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 部署更轻量，无需再做 NMS |
+| 文件 | 模型文件 | 输入尺寸 | 支持设备 | 模型出处 | 说明 |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| [lite_momo-depth-onnxruntime.py](./lite_momo-depth-onnxruntime.py) | `models/depth/lite_momo-depth-onnxruntime.onnx` | 640×192 | CPU/GPU | [Lite-Mono](https://github.com/noahzn/Lite-Mono) | 单目深度估计，相对深度，JET 颜色映射可视化 |
 
 ---
 
