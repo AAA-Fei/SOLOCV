@@ -95,11 +95,12 @@ python yolo.py
 ## 🧠 已支持的模型列表
 
 | 🏷️ 分类 (Classification) | 🎯 目标检测 (Detection) | 🧩 分割 (Segmentation) | 🧍 人体姿态 (Pose) | 🔤 OCR识别 (OCR) | 🛣️ 深度估计 (Depth) |
-|:---|:---|:---|:---|:---|:---|
-| ShuffleNetV2 | YOLO | YOLO-Seg | YOLO-Pose | Plate | Lite-Mono |
-| | RTMDet | DeepLabV3 | RTMPose | | |
-| | RT-DETR | | HRNet | | |
-| | RT-DETRv2 | | ViTPose | | |
+|:---|:--------------------|:---|:--|:---|:---|
+| ShuffleNetV2 | YOLO                | YOLO-Seg | YOLO-Pose | Plate | Lite-Mono |
+| | RTMDet              | DeepLabV3 | RTMPose | | |
+| | RT-DETR             | | HRNet | | |
+| | RT-DETRv2           | | ViTPose | | |
+| | DAMO-YOLO           | | | | |
 
 > 💡 更多模型持续更新中，可查看上方各任务类别对应的推理文档了解详情。
 

@@ -28,6 +28,7 @@
 | [rtmdet-det-onnxruntime.py](./rtmdet-det-onnxruntime.py)     | `models/det/rtmdet-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [RTMDet](https://github.com/open-mmlab/mmdetection/tree/main/configs/rtmdet) | RTMDet，支持无内置 NMS（网格解码+类别感知 NMS）与内置 NMS 两种导出 |
 | [rtdetrv2-det-onnxruntime.py](./rtdetrv2-det-onnxruntime.py) | `models/det/rtdetrv2-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [RT-DETR](https://github.com/lyuwenyu/RT-DETR/tree/main/rtdetrv2_pytorch) | RT-DETRv2，DETR 式（内置 topk 解码，无需 NMS），需喂入 `orig_target_sizes` |
 | [rtdetr-det-onnxruntime.py](./rtdetr-det-onnxruntime.py)     | `models/det/rtdetr-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [RT-DETR](https://github.com/lyuwenyu/RT-DETR/tree/main/rtdetr_pytorch) | RT-DETR（v1），DETR 式（内置 topk 解码，无需 NMS），需喂入 `orig_target_sizes`，含同类别 IoU 框合并后处理 |
+| [damoyolo-det-onnxruntime.py](./damoyolo-det-onnxruntime.py) | `models/det/damoyolo-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [DAMO-YOLO](https://github.com/tinyvision/DAMO-YOLO) | DAMO-YOLO（TinyNAS 骨干），输出已解码的 xyxy 框，类别感知 NMS（conf 0.05 / IoU 0.7），与官方 ZeroHead 配置一致 |
 
 
 ---
