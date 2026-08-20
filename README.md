@@ -101,6 +101,7 @@ python yolo.py
 | | RT-DETR             | | HRNet | | |
 | | RT-DETRv2           | | ViTPose | | |
 | | DAMO-YOLO           | | | | |
+| | YOLOX               | | | | |
 
 > 💡 更多模型持续更新中，可查看上方各任务类别对应的推理文档了解详情。
 
