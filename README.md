@@ -96,8 +96,8 @@ python yolo.py
 
 | 🏷️ 分类 (Classification) | 🎯 目标检测 (Detection) | 🧩 分割 (Segmentation) | 🧍 人体姿态 (Pose) | 🔤 OCR识别 (OCR) | 🛣️ 深度估计 (Depth) |
 |:---|:---|:---|:---|:---|:---|
-| ShuffleNetV2 | YOLO | YOLO-Seg | YOLO-Pose | - | Lite-Mono |
-| | RTMDet | | RTMPose | | |
+| ShuffleNetV2 | YOLO | YOLO-Seg | YOLO-Pose | Plate | Lite-Mono |
+| | RTMDet | DeepLabV3 | RTMPose | | |
 | | RT-DETR | | HRNet | | |
 | | RT-DETRv2 | | ViTPose | | |
 

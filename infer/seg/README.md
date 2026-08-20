@@ -25,6 +25,7 @@
 | :--- |:-------------------------------------------| :---: | :---: | :--- | :--- |
 | [yolo-seg-onnxruntime.py](./yolo-seg-onnxruntime.py) | `models/seg/yolo-seg-onnxruntime.onnx`     | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 标准导出，后处理灵活可控 |
 | [yolo-seg-onnxruntime-nms.py](./yolo-seg-onnxruntime-nms.py) | `models/seg/yolo-nms-seg-onnxruntime.onnx` | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 部署更轻量，无需再做 NMS |
+| [deeplabv3-seg-onnxruntime.py](./deeplabv3-seg-onnxruntime.py) | `models/seg/deeplabv3-seg-onnxruntime.onnx` | 动态(原图尺寸) | CPU/GPU | [DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch) | DeepLabV3+，VOC 21 类语义分割，argmax + ImageNet 归一化 + VOC 颜色解码 |
 
 ---
 

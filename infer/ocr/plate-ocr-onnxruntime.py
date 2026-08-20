@@ -1,8 +1,6 @@
 """
 车牌 OCR 推理（检测 + 识别，含车牌颜色）—— 一个任务一个文件。
 
-参照 https://github.com/we0091234/Chinese_license_plate_detection_recognition/blob/main/onnx_infer.py
-
 - 检测模型输出 YOLO 风格 (1, N, 15)：xywh + 目标置信度 + 4 角点(8) + 2 类得分（0=单层/1=双层）
 - 识别模型输出两个分支：字符序列（CTC 解码）+ 车牌颜色（黑色/蓝色/绿色/白色/黄色）
 
