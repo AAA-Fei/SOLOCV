@@ -532,10 +532,6 @@ class DEEPSORT:
         providers = [p for p in ("CUDAExecutionProvider", "CPUExecutionProvider") if p in available]
         self.session = ort.InferenceSession(onnx_model, providers=providers or available)
         # 实际生效的 EP（CUDA EP 若依赖的 CUDA/cuDNN 版本不匹配会静默回退 CPU）
-        active = self.session.get_providers()
-        print(f"[DEEPSORT] 推理后端: {active}"
-              + ("  ✅ GPU" if "CUDAExecutionProvider" in active
-                 else "  ⚠️ CPU only（GPU EP 未加载，多为 CUDA/cuDNN 版本不匹配）"))
         self.model_inputs = self.session.get_inputs()
         input_shape = self.model_inputs[0].shape
         # ReID 输入 [N, 3, H, W]，官方为 H=128, W=64
