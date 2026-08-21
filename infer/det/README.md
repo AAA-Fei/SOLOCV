@@ -23,7 +23,7 @@
 
 | 文件                                                           | 模型文件 | 输入尺寸 | 支持设备 | 模型出处 | 说明 |
 |:-------------------------------------------------------------| :--- | :---: | :---: | :--- | :--- |
-| [yolo-det-onnxruntime.py](./yolo-det-onnxruntime.py)         | `models/det/yolo-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 标准导出，后处理灵活可控 |
+| [yolo_det_onnxruntime.py](./yolo_det_onnxruntime.py)         | `models/det/yolo-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 标准导出，后处理灵活可控 |
 | [yolo-det-onnxruntime-nms.py](./yolo-det-onnxruntime-nms.py) | `models/det/yolo_nms-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [ultralytics](https://github.com/ultralytics/ultralytics) | 部署更轻量，无需再做 NMS |
 | [rtmdet-det-onnxruntime.py](./rtmdet-det-onnxruntime.py)     | `models/det/rtmdet-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [RTMDet](https://github.com/open-mmlab/mmdetection/tree/main/configs/rtmdet) | RTMDet，支持无内置 NMS（网格解码+类别感知 NMS）与内置 NMS 两种导出 |
 | [rtdetrv2-det-onnxruntime.py](./rtdetrv2-det-onnxruntime.py) | `models/det/rtdetrv2-det-onnxruntime.onnx` | 640×640 | CPU/GPU | [RT-DETR](https://github.com/lyuwenyu/RT-DETR/tree/main/rtdetrv2_pytorch) | RT-DETRv2，DETR 式（内置 topk 解码，无需 NMS），需喂入 `orig_target_sizes` |

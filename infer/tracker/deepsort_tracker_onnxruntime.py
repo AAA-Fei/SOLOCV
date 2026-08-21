@@ -1,8 +1,6 @@
 import cv2
 import numpy as np
 import onnxruntime as ort
-import importlib.util
-import inspect
 from pathlib import Path
 from typing import List, Tuple, Optional
 
@@ -680,61 +678,9 @@ class DEEPSORT:
 
 
 # ====================================================================================
-# 检测器对接：自动扫描 infer/det 下 *-det-onnxruntime*.py，无需维护任何注册表/配置。
-# 新增 det 模型只要遵守下列约定即可被自动发现（零配置）：
-#   - 脚本文件名: <key>-det-onnxruntime[-<tag>].py   (如 yolo-det-onnxruntime-nms.py)
-#   - 模型文件名: <key>-det-onnxruntime.onnx         (放在 models/det 下)
-#   - 脚本内定义一个带 run() 方法的检测器类
-#   - 该类 __init__ 形如 (onnx_model, conf=..., iou=..., draw_boxes=False)，
-#     阈值用各自默认值，tracker 不再传 conf/iou。
+# 检测器对接：下方 __main__ 直接 from-import infer/det/ 下的检测器模块，
+# 无需工厂函数。切换检测器只需改 import 的模块名 + 对应模型路径即可。
 # ====================================================================================
-
-
-def _derive_key(stem: str) -> str:
-    """由脚本文件名派生检测器 key。
-    yolo-det-onnxruntime     -> yolo
-    yolo-det-onnxruntime-nms -> yolo_nms
-    """
-    prefix, _, suffix = stem.partition("-det-onnxruntime")
-    key = prefix
-    if suffix:
-        key += "_" + suffix.lstrip("-").replace("-", "_")
-    return key
-
-
-def list_detectors(det_dir: Path) -> dict:
-    """扫描 det_dir，返回 {key: py_file}（仅按文件名，不导入模块）。"""
-    return {
-        _derive_key(p.stem): p.name
-        for p in det_dir.glob("*-det-onnxruntime*.py")
-    }
-
-
-def load_detector(key: str, det_dir: Path, models_dir: Path):
-    """按 key 自动加载检测器并实例化（draw_boxes=False，由 DeepSort 负责绘制）。
-
-    阈值全部走检测器 __init__ 自带默认值；tracker 不再持有任何 conf/iou。
-    """
-    registry = list_detectors(det_dir)
-    if key not in registry:
-        raise ValueError(f"未知检测器 '{key}'，可选: {list(registry.keys())}")
-    py_file = registry[key]
-
-    spec = importlib.util.spec_from_file_location(f"det_{key}", det_dir / py_file)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-
-    # 内省：取本模块内定义、且带 run() 方法的类作为检测器类
-    DetCls = None
-    for _, obj in inspect.getmembers(mod, inspect.isclass):
-        if obj.__module__ == mod.__name__ and hasattr(obj, "run"):
-            DetCls = obj
-            break
-    if DetCls is None:
-        raise RuntimeError(f"{py_file} 内未找到带 run() 的检测器类")
-
-    onnx_path = models_dir / "det" / f"{key}-det-onnxruntime.onnx"
-    return DetCls(str(onnx_path), draw_boxes=False)
 
 
 if __name__ == "__main__":
@@ -742,16 +688,17 @@ if __name__ == "__main__":
 
     script_dir = Path(__file__).resolve().parent            # infer/tracker
     project_root = script_dir.parent.parent                  # SOLOCV
-    det_dir = script_dir.parent / "det"                      # infer/det
+    sys.path.insert(0, str(project_root))                    # 使 infer 包可导入
     models_dir = project_root / "models"
     assets_dir = project_root / "assets"
 
-    # === 可在此切换检测器：yolo / yolo_nms / yolox / rtdetr / rtdetrv2 / rtmdet / damoyolo ===
-    det_key = "rtdetrv2"
+    from infer.det.yolo_det_onnxruntime import YOLO
+
+    det_model = models_dir / "det" / "yolo-det-onnxruntime.onnx"
     reid_model = models_dir / "tracker" / "deepsort-tracker-onnxruntime.onnx"
     video_path = assets_dir / "pedestrian.mp4"
 
-    detector = load_detector(det_key, det_dir, models_dir)
+    detector = YOLO(str(det_model))
     tracker = DEEPSORT(str(reid_model), target_classes=(0,))  # 只跟踪 person
 
     cap = cv2.VideoCapture(str(video_path))
@@ -759,7 +706,7 @@ if __name__ == "__main__":
         print(f"无法打开视频: {video_path}")
         sys.exit(1)
 
-    print(f"[INFO] 检测器: {det_key} | ReID: {reid_model.name} | 视频: {video_path.name}")
+    print(f"[INFO] 检测器: YOLO | ReID: {reid_model.name} | 视频: {video_path.name}")
 
     frame_idx = 0
     while True:
