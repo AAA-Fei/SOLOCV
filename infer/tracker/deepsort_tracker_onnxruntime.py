@@ -692,13 +692,13 @@ if __name__ == "__main__":
     models_dir = project_root / "models"
     assets_dir = project_root / "assets"
 
-    from infer.det.yolo_det_onnxruntime import YOLO
+    from infer.det.rtdetrv2_det_onnxruntime import RTDETRv2
 
-    det_model = models_dir / "det" / "yolo-det-onnxruntime.onnx"
+    det_model = models_dir / "det" / "rtdetrv2-det-onnxruntime.onnx"
     reid_model = models_dir / "tracker" / "deepsort-tracker-onnxruntime.onnx"
     video_path = assets_dir / "pedestrian.mp4"
 
-    detector = YOLO(str(det_model))
+    detector = RTDETRv2(str(det_model))
     tracker = DEEPSORT(str(reid_model), target_classes=(0,))  # 只跟踪 person
 
     cap = cv2.VideoCapture(str(video_path))
@@ -706,7 +706,7 @@ if __name__ == "__main__":
         print(f"无法打开视频: {video_path}")
         sys.exit(1)
 
-    print(f"[INFO] 检测器: YOLO | ReID: {reid_model.name} | 视频: {video_path.name}")
+    print(f"[INFO] 检测器: RTDETRv2 | ReID: {reid_model.name} | 视频: {video_path.name}")
 
     frame_idx = 0
     while True:
