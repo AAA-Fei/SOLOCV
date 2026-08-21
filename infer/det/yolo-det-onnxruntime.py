@@ -4,7 +4,7 @@ import onnxruntime as ort
 from typing import List, Tuple
 
 class YOLO:
-    def __init__(self, onnx_model: str, confidence_thres: float, iou_thres: float,
+    def __init__(self, onnx_model: str, confidence_thres: float = 0.5, iou_thres: float = 0.5,
                  draw_boxes: bool = False):  # 新增绘制开关
         available = ort.get_available_providers()
         providers = [p for p in ("CUDAExecutionProvider", "CPUExecutionProvider") if p in available]

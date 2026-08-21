@@ -92,16 +92,17 @@ python yolo.py
 - 🧍 [查看人体姿态模型推理文档](./infer/pose/README.md)
 - 🔤 [查看OCR识别模型推理文档](./infer/ocr/README.md)
 - 🛣️ [查看深度估计模型推理文档](./infer/depth/README.md)
+- 🛰️ [查看追踪检测模型推理文档](./infer/tracker/README.md)
 ## 🧠 已支持的模型列表
 
-| 🏷️ 分类 (Classification) | 🎯 目标检测 (Detection) | 🧩 分割 (Segmentation) | 🧍 人体姿态 (Pose) | 🔤 OCR识别 (OCR) | 🛣️ 深度估计 (Depth) |
-|:---|:--------------------|:---|:--|:---|:---|
-| ShuffleNetV2 | YOLO                | YOLO-Seg | YOLO-Pose | Plate | Lite-Mono |
-| | RTMDet              | DeepLabV3 | RTMPose | | |
-| | RT-DETR             | | HRNet | | |
-| | RT-DETRv2           | | ViTPose | | |
-| | DAMO-YOLO           | | | | |
-| | YOLOX               | | | | |
+| 🏷️ 分类 (Classification) | 🎯 目标检测 (Detection) | 🧩 分割 (Segmentation) | 🧍 人体姿态 (Pose) | 🔤 OCR识别 (OCR) | 🛣️ 深度估计 (Depth) | 🛰️ 追踪 (Tracking) |
+|:---|:--------------------|:---|:--|:---|:---|:---|
+| ShuffleNetV2 | YOLO                | YOLO-Seg | YOLO-Pose | Plate | Lite-Mono | DeepSort |
+| | RTMDet              | DeepLabV3 | RTMPose | | | |
+| | RT-DETR             | | HRNet | | | |
+| | RT-DETRv2           | | ViTPose | | | |
+| | DAMO-YOLO           | | | | | |
+| | YOLOX               | | | | | |
 
 > 💡 更多模型持续更新中，可查看上方各任务类别对应的推理文档了解详情。
 

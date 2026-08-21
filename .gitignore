@@ -8,3 +8,8 @@
 /infer/ocr/__pycache__/
 /infer/pose/__pycache__/
 /infer/seg/__pycache__/
+/infer/tracker/__pycache__/
+
+
+# 忽略视频文件
+assets/pedestrian.mp4
